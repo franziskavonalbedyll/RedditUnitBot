@@ -32,8 +32,8 @@ class Subreddit(RedditInstance):
 
 
 class Post(Subreddit):
-    def __init__(self, subreddit_name: str, post_id: int = None, post_idx=None, climit=10):
-        assert bool(post_id) != bool(post_idx), "Pass either a post_id or a post_idx, but not both"
+    def __init__(self, subreddit_name: str, post_id: str = None, post_idx: int = None, climit=10):
+        assert bool(post_id) is not bool(post_idx), "Pass either a post_id or a post_idx, but not both"
         assert isinstance(post_id, str) or isinstance(post_idx, int), "Wrong type passed"
         super().__init__(subreddit_name)
         # TODO Geschickter lösen, so dass subreddit name nicht mehrfach gepasst werden muss
