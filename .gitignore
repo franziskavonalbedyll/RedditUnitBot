@@ -133,3 +133,7 @@ dmypy.json
 *.csv
 
 passwords.py
+
+
+#idea 
+.idea
