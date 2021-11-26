@@ -31,23 +31,19 @@ class Subreddit(RedditInstance):
         # TODO also implement for other reddit sorting methods (new, rising etc)
 
 
-class Post(Subreddit):
-    def __init__(self, subreddit_name: str, post_id: str = None, post_idx: int = None, climit=10):
-        assert not(bool(post_id) & bool(post_idx)), "Pass either a post_id or a post_idx, but not both"
-        assert isinstance(post_id, str) or isinstance(post_idx, int), "Wrong type passed"
-        super().__init__(subreddit_name)
-        # TODO Geschickter lösen, so dass subreddit name nicht mehrfach gepasst werden muss
-        self.post = self._get_post_from_post_id(post_id) if post_id else self._get_post_from_post_idx(post_idx)
+class Post(RedditInstance):
+    def __init__(self, post_id: str, climit=10, posts_ids: list = None):
+        assert isinstance(post_id, str), "The parameter post_id must be passed as type string."
+        super().__init__()
+        self.post_id = post_id
+        self.post = self._get_post_from_post_id()
         self.comments_ids = self._get_comments_ids(climit)
 
     def __repr__(self):
         return self.post.selftext
 
-    def _get_post_from_post_id(self, post_id):
-        return self.reddit_instance.submission(post_id)
-
-    def _get_post_from_post_idx(self, post_idx):
-        return self._get_post_from_post_id(self.posts_ids[post_idx])
+    def _get_post_from_post_id(self):
+        return self.reddit_instance.submission(self.post_id)
 
     def _get_comments_ids(self, climit):
         pass
