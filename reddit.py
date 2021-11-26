@@ -29,10 +29,11 @@ class Subreddit(RedditInstance):
         subreddit = self.subreddit_instance.hot(limit=plimit)
         return [post.id for post in subreddit]
         # TODO also implement for other reddit sorting methods (new, rising etc)
+        # TODO make abstract method (since also usable on comments?)
 
 
 class Post(RedditInstance):
-    def __init__(self, post_id: str, climit=10, posts_ids: list = None):
+    def __init__(self, post_id: str, climit=10):
         assert isinstance(post_id, str), "The parameter post_id must be passed as type string."
         super().__init__()
         self.post_id = post_id
