@@ -36,15 +36,14 @@ class Post(RedditInstance):
     def __init__(self, post_id: str, climit=10):
         assert isinstance(post_id, str), "The parameter post_id must be passed as type string."
         super().__init__()
-        self.post_id = post_id
-        self.post = self._get_post_from_post_id()
+        self.post = self._get_post(post_id)
         self.comments_ids = self._get_comments_ids(climit)
 
     def __repr__(self):
         return self.post.selftext
 
-    def _get_post_from_post_id(self):
-        return self.reddit_instance.submission(self.post_id)
+    def _get_post(self, post_id):
+        return self.reddit_instance.submission(post_id)
 
     def _get_comments_ids(self, climit):
         pass
