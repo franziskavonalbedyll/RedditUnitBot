@@ -1,8 +1,10 @@
 import praw
 import praw.models
+import prawcore
 
 import helpers
 import passwords as pwd
+from typing import Union
 
 
 class RedditInstance:
@@ -15,10 +17,16 @@ class RedditInstance:
             client_id=pwd.reddit["client_id"],
             client_secret=pwd.reddit["client_secret"],
             user_agent="RedditUnitBot (by u/RedditUnitBot)",
+            username=pwd.reddit["username"],
+            password=pwd.reddit["password"]
         )
 
-    def comment_converted_units():
-        pass
+    def comment_converted_units(self, replying_to_id, reply: str):
+        self.reddit_instance.submission(id=replying_to_id).reply(reply)
+        try:
+            self.reddit_instance.submission(id=replying_to_id).reply(reply)
+        except prawcore.exceptions.Forbidden:
+            self.reddit_instance.comment(id=replying_to_id).reply(reply)
 
 
 class Subreddit(RedditInstance):
@@ -27,17 +35,20 @@ class Subreddit(RedditInstance):
         self.subreddit_instance = self.reddit_instance.subreddit(subreddit_name)
         self.posts_ids = self._get_subreddit_posts_ids(plimit=plimit)
 
+    def __len__(self):
+        return len(self.posts_ids)
+
     def _get_subreddit_posts_ids(self, plimit):
         subreddit = self.subreddit_instance.hot(limit=plimit)
         return [post.id for post in subreddit]
         # TODO also implement for other reddit sorting methods (new, rising etc)
-        # TODO make abstract method (since also usable on comments?)
 
 
 class Post(RedditInstance):
     def __init__(self, post_id: str):
         assert isinstance(post_id, str), "The parameter post_id must be passed as type string."
         super().__init__()
+        self.post_id = post_id
         self.post = self._get_post(post_id)
         self.comments_ids = FlattenedCommentTree(self.post)
 
