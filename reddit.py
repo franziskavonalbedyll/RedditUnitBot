@@ -17,8 +17,8 @@ class RedditInstance:
             client_id=pwd.reddit["client_id"],
             client_secret=pwd.reddit["client_secret"],
             user_agent="RedditUnitBot (by u/RedditUnitBot)",
-            username=pwd.reddit["username"],
-            password=pwd.reddit["password"]
+            username=pwd.reddit["user"],
+            password=pwd.reddit["pwd"]
         )
 
     def comment_converted_units(self, replying_to_id, reply: str):
