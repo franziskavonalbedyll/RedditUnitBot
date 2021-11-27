@@ -1,6 +1,7 @@
 import praw
 
 import passwords as pwd
+from typing import Union
 
 
 class RedditInstance:
@@ -14,6 +15,10 @@ class RedditInstance:
             client_secret=pwd.reddit["client_secret"],
             user_agent="RedditUnitBot (by u/RedditUnitBot)",
         )
+
+    def _get_comments_ids(self, cparent):
+        return [comment.id for comment in cparent.comments]
+    #TODO put into abstract class
 
     def comment_converted_units():
         pass
@@ -37,17 +42,28 @@ class Post(RedditInstance):
         assert isinstance(post_id, str), "The parameter post_id must be passed as type string."
         super().__init__()
         self.post = self._get_post(post_id)
-        self.comments_ids = self._get_comments_ids(climit)
+        self.comments_ids = self._get_comments_ids(self.post)
 
     def __repr__(self):
-        return self.post.selftext
+        title_body_boundary = len(self.post.title) * "-"
+        posts_boundary = 2 * f"{40 * '-'}\n"
+        return f"{self.post.title}\n{title_body_boundary}\n{self.post.selftext}\n{posts_boundary}"
 
     def _get_post(self, post_id):
         return self.reddit_instance.submission(post_id)
 
-    def _get_comments_ids(self, climit):
-        pass
+
+class Comment(RedditInstance):
+    def __init__(self, comment_id: str, climit=10):
+        assert isinstance(comment_id, str), "The parameter comment_id must be passed as type string."
+        super().__init__()
+        self.comment = self._get_comment(comment_id)
+        self.comments_ids = self._get_comments_ids(self.comment)
+
+    def __repr__(self):
+        return self.comment.selftext
+
+    def _get_comment(self, comment_id):
+        return self.reddit_instance.submission(comment_id)
 
 
-class Comment(Post):
-    pass
