@@ -1,12 +1,11 @@
-import praw
-import passwords as pwd
+import reddit
+
 
 def main():
-    reddit = praw.Reddit(
-        client_id=pwd.reddit["client_id"],
-        client_secret=pwd.reddit["client_secret"],
-        user_agent="RedditUnitBot (by u/RedditUnitBot)",
-    )
+    subreddit = reddit.Subreddit("UnitBotTesting")
+    for post_id in subreddit.posts_ids:
+        post = reddit.Post(post_id)
+        print(post)
 
 
 if __name__ == "__main__":
