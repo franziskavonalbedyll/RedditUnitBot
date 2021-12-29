@@ -1,30 +1,52 @@
-
 CONVERT_MILES = 1.60934
 CONVERT_INCH = 2.54
 CONVERT_FOOT = 30.48
 CONVERT_POUNDS = 0.453592
 
+
 def milestoKM(miles):
-    return miles*CONVERT_MILES
+    return f'{miles * CONVERT_MILES} km'
+
+
 def kmtoMiles(km):
-    return km/CONVERT_MILES
+    return f'{km / CONVERT_MILES} mi'
+
+
 def inchtoCm(inch):
-    return inch*CONVERT_INCH
+    return f'{inch * CONVERT_INCH} cm'
+
+
 def cmtoInch(cm):
-    return cm/CONVERT_INCH
+    return f'{cm / CONVERT_INCH} "'
+
+
 def foottoCM(foot):
-    return foot*CONVERT_FOOT
+    return f'{foot * CONVERT_FOOT} cm"'
+
+
 def cmtoFoot(cm):
-    return cm/CONVERT_FOOT
+    return f'{cm / CONVERT_FOOT} ft'
+
+
 def foottoMeter(foot):
-    return (foot*CONVERT_FOOT)/100
+    return f'{foot * CONVERT_FOOT / 100} m'
+
+
 def metertoFoot(meter):
-    return (meter*100)/CONVERT_FOOT
+    return f'{(meter * 100) / CONVERT_FOOT} ft'
+
+
 def poundstoKg(pounds):
-    return pounds * CONVERT_POUNDS
+    return f'{pounds * CONVERT_POUNDS} kg'
+
+
 def kilogrammtoPounds(kilogramms):
-    return kilogramms / CONVERT_POUNDS
+    return f'{kilogramms / CONVERT_POUNDS} lbs'
+
+
 def celsiustoFahrenheit(celsius):
-    return (celsius * (9/5)) + 32
+    return f'{(celsius * (9 / 5)) + 32} °F'
+
+
 def fahrenheittoCelsius(fahrenheit):
-    return (fahrenheit - 32) * 5/9
+    return f'{(fahrenheit - 32) * 5 / 9} °C'
