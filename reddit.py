@@ -4,7 +4,6 @@ import prawcore
 
 import helpers
 import passwords as pwd
-from typing import Union
 
 
 class RedditInstance:
@@ -49,14 +48,14 @@ class Post(RedditInstance):
         assert isinstance(post_id, str), "The parameter post_id must be passed as type string."
         super().__init__()
         self.post_id = post_id
-        self.post = self._get_post(post_id)
-        self.comments_ids = FlattenedCommentTree(self.post)
+        self.body = self._get_post(post_id)
+        self.comments_ids = FlattenedCommentTree(self.body)
 
     def __repr__(self):
-        title_body_boundary = len(self.post.title) * "-"
-        body_comments_boundary = len(self.post.title) * "."
+        title_body_boundary = len(self.body.title) * "-"
+        body_comments_boundary = len(self.body.title) * "."
         post_post_boundary = 2 * f"{40 * '-'}\n"
-        return f"{self.post.title}\n{title_body_boundary}\n{self.post.selftext}\n{body_comments_boundary}\n{repr(self.comments_ids)}\n{post_post_boundary}"
+        return f"{self.body.title}\n{title_body_boundary}\n{self.body.selftext}\n{body_comments_boundary}\n{repr(self.comments_ids)}\n{post_post_boundary}"
 
     def _get_post(self, post_id):
         return self.reddit_instance.submission(post_id)
@@ -71,7 +70,7 @@ class FlattenedCommentTree:
         self.comments_ids = [comment.id for comment in self.flattened_comment_tree]
 
     def __repr__(self):
-        return "".join([f"{Comment(comment_id)}\n" for comment_id in self.comments_ids])
+        return "".join([f"{comment_id}\n" for comment_id in self.comments_ids])
 
     def _flatten_comment_tree(self, cf: praw.models.comment_forest.CommentForest):
         if isinstance(cf, praw.models.comment_forest.CommentForest) and len(cf._comments) != 0:
