@@ -4,10 +4,13 @@ from enum import Enum
 import conversion as conv
 
 
-#examples = ["i have 5kgs of potatoes and 10 miles", "5 kg", "2 lbs", "10929092°C", "13 °C", "kg 192 ", "19.991 g",'292"']
+# examples = ["i have 5kgs of potatoes and 10 miles", "5 kg", "2 lbs", "10929092°C", "13 °C", "kg 192 ", "19.991 g",'292"']
 
 
 class Units(Enum):
+    """
+    Class containing the different unit identifiers, organized by units.
+    """
     KILOGRAM = ["kg", "KG", "Kilo", "Kgs", "kgs"]
     GRAM = ["g", "gram"]
     LBS = ["lbs"]
@@ -21,10 +24,24 @@ class Units(Enum):
 
     @staticmethod
     def get_units():
+        """ This method returns a flattened list of all unit identifiers"""
         return [unit for unit_list in Units for unit in unit_list.value]
 
 
 class Processor:
+    """
+    This class is used to process an input text (i.e., a post body or a comment).
+    Processing includes:
+     * Finding any mentions of units (see Units for the supported Units)
+     * Converting the mentions to imperial or metric system
+     * Creating a text with the converted units which can be posted as a comment
+
+     Example usage:
+     IN: print(Processor.get_answer_text("I have 5kg of potatoes"))
+     OUT: "5.0 kgs equals 11.02 lbs."
+
+
+     """
     PATTERN = r"(?P<value>\d+\.?,?\d*) ?(?P<potential_unit>[a-zA-Z°?\'?\"?]*)"
 
     @staticmethod
@@ -34,7 +51,10 @@ class Processor:
                 unit in Units.get_units()]
 
     @staticmethod
-    def _convert_units(matches: list) -> list:
+    def _convert_units(matches: list[float, str]) -> list[str]:
+        """
+        Takes a list of values and their units and returns a list of strings stating the resulting converted value
+        """
         conv_matches = []
         for value, unit in matches:
             if unit in Units.KILOGRAM.value:
@@ -71,5 +91,5 @@ class Processor:
             conversions += f'{str(original_unit[0])} {original_unit[1]} equals {converted_unit}.\n'
         return conversions
 
-#for ex in examples:
+# for ex in examples:
 #    print(Processor.get_answer_text(ex))
