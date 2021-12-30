@@ -65,6 +65,10 @@ class Post(RedditInstance):
 
 
 class FlattenedCommentTree:
+    """
+    This class creates and stores a flattened comment tree, i.e. a list of all comment IDs belonging to a submission,
+    irregardless of their hierarchy
+     """
     def __init__(self, post: Post):
         self.flattened_comment_tree = self._flatten_comment_tree(post.comments)
         self.comments_ids = [comment.id for comment in self.flattened_comment_tree]
@@ -79,9 +83,11 @@ class FlattenedCommentTree:
             return [cf] + [self._flatten_comment_tree(sub_id) for sub_id in cf.replies]
         else:
             return cf
+    #!TODO rewrite
 
 
 class Comment(RedditInstance):
+    #!TODO consider deleting, might be redundant
     def __init__(self, comment_id: str):
         assert isinstance(comment_id, str), "The parameter comment_id must be passed as type string."
         super().__init__()
