@@ -3,7 +3,8 @@ from enum import Enum
 
 import conversion as conv
 
-#examples = ["i have 5kgs of potatoes and 10 miles", "5 kg", "2 lbs", "10929092°C", "13 °C", "kg 192 ", "19.991 g",'292"']
+
+# examples = ["i have 5kgs of potatoes and 10 miles", "5 kg", "2 lbs", "10929092°C", "13 °C", "kg 192 ", "19.991 g",'292"']
 
 
 class Units(Enum):
@@ -20,11 +21,7 @@ class Units(Enum):
 
     @staticmethod
     def get_units():
-        lst = []
-        for e in Units:
-            for u in e.value:
-                lst.append(u)
-        return lst
+        return [unit for unit_list in Units for unit in unit_list.value]
 
 
 class Processor:
